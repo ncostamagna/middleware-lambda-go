@@ -1,0 +1,33 @@
+# golang output binary directory
+bin
+
+# golang vendor (dependencies) directory
+vendor
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+.idea/
+.env
+coverage.html
+test.log
+
+# Node modules
+node_modules/*
+
+.DS_Store
+snsExample
+cmd/snsexample/
+
+environment/
+.serverless/

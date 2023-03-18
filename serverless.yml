@@ -1,0 +1,62 @@
+service: authorizer
+
+frameworkVersion: "3.22.0"
+useDotenv: true
+params: ${file(./environment/params.yml)}
+
+provider: ${file(./environment/provider.yml)}
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4002
+    websocketPort: 3002
+    lambdaPort: 3102
+    useDocker: true
+    dockerHost: 0.0.0.0
+    dockerNetwork: appnet
+    prefix: enrollments
+    noPrependStageInUrl: true
+    apiKey: local_api_key
+    noTimeout: true
+  serverless-offline-ssm:
+    stages:
+      - local
+
+package:
+  individually: true
+  exclude:
+    - ./.git/**
+    - ./.serverless/**
+    - ./node_modules/**
+    - ./pkg/**
+    - ./bootstrap/**
+    - ./cmd/**
+    - ./.dockers/**
+    - ./.githooks/**
+    - ./bin/**
+
+functions:
+  hello:
+    handler: bin/hello
+    events:
+      - http:
+          path: hello
+          method: get
+          cors: true
+          authorizer:
+            type: TOKEN
+            name: authorizerFun
+            identitySource: method.request.header.X-Api-Key
+            resultTtlInSeconds: 0
+    package:
+      include:
+        - ./bin/hello
+
+  authorizerFun:
+    handler: bin/authorizer
+    package:
+      include:
+        - ./bin/authorizer
