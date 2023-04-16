@@ -2,7 +2,9 @@ package hello
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/digitalhouse-tech/go-lib-kit/response"
 	"github.com/digitalhouse-tech/go-lib-util/lambda"
 	"github.com/go-kit/kit/endpoint"
@@ -16,8 +18,15 @@ func NewHelloLambda(endpoints Endpoints) *awslambda.Handler {
 }
 
 func decodeGetHandler(ctx context.Context, payload []byte) (interface{}, error) {
-	fmt.Println(ctx)
-	fmt.Println(string(payload))
+	var gateway events.APIGatewayProxyRequest
+	err := json.Unmarshal(payload, &gateway)
+	if err != nil {
+		return nil, response.BadRequest(err.Error())
+	}
+
+	fmt.Println(gateway)
+	fmt.Println(gateway.RequestContext)
+	fmt.Println(gateway.RequestContext.Authorizer)
 	return nil, nil
 }
 
