@@ -49,7 +49,7 @@ functions:
           authorizer:
             type: TOKEN
             name: authorizerFun
-            identitySource: method.request.header.X-Api-Key
+            identitySource: method.request.header.Authorization
             resultTtlInSeconds: 0
     package:
       include:

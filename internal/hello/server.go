@@ -2,6 +2,7 @@ package hello
 
 import (
 	"context"
+	"fmt"
 	"github.com/digitalhouse-tech/go-lib-kit/response"
 	"github.com/digitalhouse-tech/go-lib-util/lambda"
 	"github.com/go-kit/kit/endpoint"
@@ -14,7 +15,9 @@ func NewHelloLambda(endpoints Endpoints) *awslambda.Handler {
 		lambda.HandlerErrorEncoder(nil), awslambda.HandlerFinalizer(lambda.HandlerFinalizer(nil)))
 }
 
-func decodeGetHandler(_ context.Context, _ []byte) (interface{}, error) {
+func decodeGetHandler(ctx context.Context, payload []byte) (interface{}, error) {
+	fmt.Println(ctx)
+	fmt.Println(string(payload))
 	return nil, nil
 }
 
